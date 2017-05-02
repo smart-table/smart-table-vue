@@ -19,32 +19,45 @@ or
 ## Usage
 
 ```Javascript
-
 import {sort, table as tableMixin} from 'smart-table-vue';
 import {table} from 'smart-table-core';
 
 //use "sort" mixin to add a sortable behavior
-Vue.component('SortableHeader',{
-    mixins:[sort],
-    template:'<th v-on:click="toggle"><slot></slot></th>',
-
+Vue.component("SortableHeader", {
+  mixins: [sort],
+  template: `<th v-bind:class="[activeClass]"  v-on:click="toggle"><slot></slot></th>`,
+  data: function() {
+    return { activeClass: "" };
+  },
+  watch: {
+    stState: function(val) {
+      const { pointer, direction } = val;
+      if (pointer === this.stSort) {
+        this.activeClass = direction === "asc"
+          ? "st-sort-asc"
+          : direction === "desc" ? "st-sort-desc" : "";
+      } else {
+        this.activeClass = "";
+      }
+    }
+  }
 });
 
 //use "table" mixin to add a table behavior
-Vue.component('PersonTable',{
-    mixins:[tableMixin],
-    template:`
+Vue.component("PersonTable", {
+  mixins: [tableMixin],
+  template: `
     <table>
       <thead>
           <tr>
-            <th is="sortable-header" :smart-table="smartTable" st-sort="surname>Surname</th>
-            <th is="sortable-header" :smart-table="smartTable" st-sort="name>Name</th>
+            <th is="sortable-header" :smart-table="smartTable" st-sort="surname">Surname</th>
+            <th is="sortable-header" :smart-table="smartTable" st-sort="name">Name</th>
           </tr>
       </thead>
       <tbody>
       <tr v-for="item in displayed">
-        <td>{{item.surname}}</td>
-        <td>{{item.name}}<td>
+        <td>{{item.value.surname}}</td>
+        <td>{{item.value.name}}</td>
       </tr>
       </tbody>
     </table>
@@ -52,47 +65,25 @@ Vue.component('PersonTable',{
 });
 
 const persons = table({
-    data:[]
+  data: [
+    { surname: "Renard", name: "Laurent" },
+    { surname: "Leponge", name: "Bob" }
+  ]
 });
 
 
+//your app
 new Vue({
-    el:'#container',
-    template:``,
+  el: "#container",
+  data: {
+    smartTable: persons
+  },
+  template: `<Person-table :smart-table="smartTable"/>`
 });
+
 ```
 
-```Markup
-<template>
-    <table>
-      <thead>
-      <tr>
-        <th>Surname</th>
-        <th>Name</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="item in displayed">
-        <td>{{item.surname}}</td>
-        <td>{{item.firstname}}<td>
-      </tr>
-      </tbody>
-    </table>
-</template>
-
-<script>
-  import {table} from 'smart-table-vue';
-
-  export default {
-    mixins: [table],
-    data () {
-      return {
-        searchScope: ['name.first', 'name.last']
-      };
-    }
-  };
-</script>
-```
+see with [CodePen](https://codepen.io/lorenzofox3/pen/GmEvLO?editors=1010)
 
 ## Example
 
