@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "description": "smart table binding for vuejs",
   "main": "./dist/smart-table-vue.js",
+  "jsnext:main": "./index.js",
+  "module": "./index.js",
   "directories": {
     "example": "example"
   },
-  "dependencies": {},
   "devDependencies": {
+    "rollup-plugin-node-resolve": "3.0.0",
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-vue": "^2.2.21",
