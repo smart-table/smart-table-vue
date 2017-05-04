@@ -2,7 +2,7 @@
 
 Smart table binding for [Vuejs](https://vuejs.org/). Refer to the [documentation website](https://smart-table.org/vuejs.html) for more details.
 
-Checkout the [https://smart-table.github.io/smart-table-vue/example/](online demo]
+Checkout the [online demo](https://smart-table.github.io/smart-table-vue/example/)
 
 Come as a set of convenient mixins so you can focus on your templates only.
 
