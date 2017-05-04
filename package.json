@@ -1,6 +1,6 @@
 {
   "name": "smart-table-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "smart table binding for vuejs",
   "main": "./dist/smart-table-vue.js",
   "jsnext:main": "./index.js",
