@@ -1,6 +1,6 @@
 # smart-table-vue
 
-Smart table binding for [Vuejs](https://vuejs.org/). Refer to the [documentation website](https://smart-table.org/vuejs.html) for more details.
+Smart table binding for [Vuejs](https://vuejs.org/). Refer to the [documentation website](https://smart-table.github.io/www/dist/) for more details.
 
 Checkout the [online demo](https://smart-table.github.io/smart-table-vue/example/)
 
