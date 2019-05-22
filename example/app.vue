@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import table from 'smart-table-core';
+  import {table} from 'smart-table-core';
   import SmartTable from './components/table.vue'
 
   export default {

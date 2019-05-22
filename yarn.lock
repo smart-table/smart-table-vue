@@ -1839,6 +1839,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+re-template-tag@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/re-template-tag/-/re-template-tag-2.0.1.tgz#bdebf1cc76cece769090906e7317925069504955"
+  integrity sha512-TkxjSTkKDTKjSrflkkUDHd/2RDQuwoYPdrdNtTcDG0wD2EeT5FeeWe1QANwKe4BwOC5kN8a7QnvSAgSz7mRhwQ==
+
 readable-stream@^2.0.2, readable-stream@^2.0.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
@@ -2097,55 +2102,61 @@ signal-exit@^3.0.0:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
-smart-table-core@^1.3.2:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/smart-table-core/-/smart-table-core-1.3.6.tgz#a202c11cc6ba312f61d2336156da805bfdc0ce3d"
-  integrity sha512-CgldN3reCTO2fYxM5ZrTCgLHr16NfImAOch+IxFZxhrScHxXMACA8HTsNDHDVef/Bima4nJtWeEfIesrGnEohA==
+smart-table-core@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/smart-table-core/-/smart-table-core-2.4.1.tgz#34c58fd58a096a22c6d8762c1f51e20fe35721a4"
+  integrity sha512-zuk+2CwqCKbMjFd3OQET1/QwGeVhWGw3eFgWnbFj3S6jOJAkOyFgvjjYvXn1Dfwa/USQJdx/nxAiJyeQ8/y3tQ==
   dependencies:
     smart-table-events "^1.0.4"
-    smart-table-filter "^1.0.2"
+    smart-table-filter "^2.0.0"
     smart-table-json-pointer "^1.0.3"
     smart-table-operators "^2.0.4"
-    smart-table-search "^1.0.3"
-    smart-table-sort "^1.0.2"
+    smart-table-search "^2.0.0"
+    smart-table-sort "^2.0.0-0"
 
 smart-table-events@^1.0.4:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/smart-table-events/-/smart-table-events-1.0.10.tgz#c6596ab2bd8246fe238df9447b5a8d706efc1659"
   integrity sha512-v/5OC4uO2n2Fpa3/liT08hCDTaMrA5SkEo81QssYDbQLIbIDv1ZsONs4hMgbH+O1DEAN2ZmIEtEf8WLIDYTuCA==
 
-smart-table-filter@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/smart-table-filter/-/smart-table-filter-1.0.2.tgz#70dc8e795aae6a1e1d4cb634d3d2de558c450e51"
-  integrity sha512-EPEkQuUsHW5cwfA9q48D0f2KTty0DH/tA+kSV6jVyq1ZKAJpNs3ZxiimDiR9rxjQbAVldixV+/ENpF2n07ajAQ==
+smart-table-filter@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/smart-table-filter/-/smart-table-filter-2.0.4.tgz#6d56afc29cddead59121a916d76ac1c85bb15a4b"
+  integrity sha512-8Hbg9LBND9jdZH2zAfHETvWxsLL1B9Ves5atstQ7pvZkJvD0sPzI175pGwRQfXx5+r05yz2roO/kTQ31Q8g7WA==
   dependencies:
-    smart-table-json-pointer "^1.0.1"
-    smart-table-operators "^2.0.0"
+    smart-table-json-pointer "^2.0.4"
+    smart-table-operators "^2.0.10"
 
-smart-table-json-pointer@^1.0.1, smart-table-json-pointer@^1.0.2, smart-table-json-pointer@^1.0.3:
+smart-table-json-pointer@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/smart-table-json-pointer/-/smart-table-json-pointer-1.0.4.tgz#92b94ebea55b9fcc0a96b0e3233f10000ecc8edd"
   integrity sha512-zV4wD3h/E1NO2+YyzwGqP7JSWLbjWjXijr/m19euULyU+l8zBXHVFSU+pEtUyET2cjXkf+J21aZkkPPfQlM6qA==
 
-smart-table-operators@^2.0.0, smart-table-operators@^2.0.4:
+smart-table-json-pointer@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/smart-table-json-pointer/-/smart-table-json-pointer-2.0.4.tgz#824c2c489f57f004288fdde00a61964db1dba7e3"
+  integrity sha512-+egO41SIMPwwNnxvodz6oXa3nuZQesW7Si4QitrDyV0EYPby1GcbrSbYvC/08PBWZ6YbhvCNdCmha4rHVGU8VA==
+
+smart-table-operators@^2.0.10, smart-table-operators@^2.0.4:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/smart-table-operators/-/smart-table-operators-2.0.10.tgz#b368b3c70da3b53037ddd98bf7e4a9e8637ebbe9"
   integrity sha512-qjc3DZVFCTSz+zfEwXB4uoZ1lUomQLBmND9ZUobXVR5zf15KW66ETIHLi8eQBfSHUDdvi3yNslK3aiCJbeG/gw==
 
-smart-table-search@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/smart-table-search/-/smart-table-search-1.0.3.tgz#e030afcf0a28b565c4caac54a1c752a7b2bb956b"
-  integrity sha512-KeYtlt1DzFugrBfqt1w9EWEJ7OVGolYWvZ2ZGNykL4HPFkL0sGg3S4q8XVKsnO0DBDo/hZhp+/erpI2tJbY7Ug==
+smart-table-search@^2.0.0:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/smart-table-search/-/smart-table-search-2.0.6.tgz#b2fd2e92481e3a009704c272dce3506e4e6021b4"
+  integrity sha512-yruH8HFmeTQHrtbnOa0Y/gc4ZfYIwcuaJQUABmXVju992jVuVe/ubao8OdoXnbmX0MWwZdlXOE52D9kQ6/YzjQ==
   dependencies:
-    smart-table-json-pointer "^1.0.2"
+    re-template-tag "^2.0.1"
+    smart-table-json-pointer "^2.0.4"
 
-smart-table-sort@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/smart-table-sort/-/smart-table-sort-1.0.2.tgz#492bfe8174ed9312cb11c8b4e624afe39d29f72c"
-  integrity sha512-PuqyCcZRNU+VS10X5+7KLY/P93HhlONkVFx4iTTajHi9Th5LvUuDCiz8iGQFXUU5Z5CElY7B8JMQ6XgxEvTFZQ==
+smart-table-sort@^2.0.0-0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/smart-table-sort/-/smart-table-sort-2.0.4.tgz#618a6a439bb9553ecfe1e23caaef34030eff89ef"
+  integrity sha512-61d2f44TebZlg0PME79zWYogWXG303YsOZ+6dNxofQRgc4s45rUGtKN6CIyuYeqE1lkJJFLVH7leF6W8UYyBzw==
   dependencies:
-    smart-table-json-pointer "^1.0.1"
-    smart-table-operators "^2.0.0"
+    smart-table-json-pointer "^2.0.4"
+    smart-table-operators "^2.0.10"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

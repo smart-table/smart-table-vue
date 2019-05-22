@@ -8,6 +8,11 @@
   import sort from '../../lib/sort';
   export default {
     mixins: [sort],
+    data() {
+      return {
+        activeClass: '',
+      }
+    },
     watch: {
       stState: function (val) {
         const {pointer, direction} = val;

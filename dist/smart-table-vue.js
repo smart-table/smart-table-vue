@@ -4,6 +4,34 @@
 	(global['smart-table-vue'] = factory());
 }(this, (function () { 'use strict';
 
+var SortDirection;
+(function (SortDirection) {
+    SortDirection["ASC"] = "asc";
+    SortDirection["DESC"] = "desc";
+    SortDirection["NONE"] = "none";
+})(SortDirection || (SortDirection = {}));
+
+var Type;
+(function (Type) {
+    Type["BOOLEAN"] = "boolean";
+    Type["NUMBER"] = "number";
+    Type["DATE"] = "date";
+    Type["STRING"] = "string";
+})(Type || (Type = {}));
+var FilterOperator;
+(function (FilterOperator) {
+    FilterOperator["INCLUDES"] = "includes";
+    FilterOperator["IS"] = "is";
+    FilterOperator["IS_NOT"] = "isNot";
+    FilterOperator["LOWER_THAN"] = "lt";
+    FilterOperator["GREATER_THAN"] = "gt";
+    FilterOperator["GREATER_THAN_OR_EQUAL"] = "gte";
+    FilterOperator["LOWER_THAN_OR_EQUAL"] = "lte";
+    FilterOperator["EQUALS"] = "equals";
+    FilterOperator["NOT_EQUALS"] = "notEquals";
+    FilterOperator["ANY_OF"] = "anyOf";
+})(FilterOperator || (FilterOperator = {}));
+
 const proxyListener = (eventMap) => ({ emitter }) => {
     const eventListeners = {};
     const proxy = {
@@ -52,14 +80,20 @@ var filterDirective = ({table, pointer, operator = 'includes', type = 'string'})
 
 		};
 		return table.filter(filterConf);
+	},
+	state() {
+		return table.getTableState().filter;
 	}
 }, filterListener({emitter: table}));
 
 const searchListener = proxyListener({[SEARCH_CHANGED]: 'onSearchChange'});
 
 var searchDirective = ({table, scope = []}) => Object.assign(searchListener({emitter: table}), {
-	search(input) {
-		return table.search({value: input, scope});
+	search(input, opts = {}) {
+		return table.search(Object.assign({}, {value: input, scope}, opts));
+	},
+	state() {
+		return table.getTableState().search;
 	}
 });
 
@@ -67,7 +101,7 @@ const sliceListener = proxyListener({[PAGE_CHANGED]: 'onPageChange', [SUMMARY_CH
 
 var sliceDirective = function ({table}) {
 	let {slice: {page: currentPage, size: currentSize}} = table.getTableState();
-	let itemListLength = table.length;
+	let itemListLength = table.filteredCount;
 
 	const api = {
 		selectPage(p) {
@@ -87,6 +121,9 @@ var sliceDirective = function ({table}) {
 		},
 		isNextPageEnabled() {
 			return Math.ceil(itemListLength / currentSize) > currentPage;
+		},
+		state() {
+			return Object.assign(table.getTableState().slice, {filteredCount: itemListLength});
 		}
 	};
 	const directive = Object.assign(api, sliceListener({emitter: table}));
@@ -100,28 +137,41 @@ var sliceDirective = function ({table}) {
 	return directive;
 };
 
+const debounce = (fn, time) => {
+	let timer = null;
+	return (...args) => {
+		if (timer !== null) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(() => fn(...args), time);
+	};
+};
+
 const sortListeners = proxyListener({[TOGGLE_SORT]: 'onSortToggle'});
 const directions = ['asc', 'desc'];
 
-var sortDirective = function ({pointer, table, cycle = false}) {
+var sortDirective = function ({pointer, table, cycle = false, debounceTime = 0}) {
 	const cycleDirections = cycle === true ? ['none'].concat(directions) : [...directions].reverse();
+	const commit = debounce(table.sort, debounceTime);
 	let hit = 0;
 
 	const directive = Object.assign({
 		toggle() {
 			hit++;
 			const direction = cycleDirections[hit % cycleDirections.length];
-			return table.sort({pointer, direction});
+			return commit({pointer, direction});
+		},
+		state() {
+			return table.getTableState().sort;
 		}
-
 	}, sortListeners({emitter: table}));
 
 	directive.onSortToggle(({pointer: p}) => {
-		if (pointer !== p) {
-			hit = 0;
-		}
+		hit = pointer !== p ? 0 : hit;
 	});
 
+	const {pointer: statePointer, direction = 'asc'} = directive.state();
+	hit = statePointer === pointer ? (direction === 'asc' ? 1 : 2) : 0;
 	return directive;
 };
 
@@ -198,7 +248,7 @@ var pagination = Object.assign({
 
 const mapPropsToConf$1 = ({smartTable, stSearchScope}) => ({table: smartTable, scope: stSearchScope});
 
-var search$2 = Object.assign({
+var search$1 = Object.assign({
   props: ['smartTable', 'stSearchScope'],
 }, mixin(search, 'onSearchChange', ['search'], mapPropsToConf$1));
 
@@ -222,7 +272,7 @@ var summary$1 = Object.assign({
   mixin(summary, 'onSummaryChange')
 );
 
-var table$3 = {
+var table$2 = {
   props: ['smartTable'],
   data(){
     return {
@@ -244,10 +294,10 @@ var index = {
   filter: filter$$1,
   loadingIndicator,
   pagination,
-  search: search$2,
+  search: search$1,
   sort: sort$1,
   summary: summary$1,
-  table: table$3
+  table: table$2
 };
 
 return index;

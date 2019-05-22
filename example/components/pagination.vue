@@ -10,6 +10,12 @@
   import pagination from '../../lib/pagination';
   export default {
     mixins: [pagination],
+    data() {
+      return {
+        isPreviousDisabled: true,
+        isNextDisabled: true,
+      }
+    },
     watch: {
       stState: function () {
         this.isPreviousDisabled = !this.stDirective.isPreviousPageEnabled();
