@@ -4,35 +4,30 @@
 	(global['smart-table-vue'] = factory());
 }(this, (function () { 'use strict';
 
-function proxyListener (eventMap) {
-  return function ({emitter}) {
-
-    const proxy = {};
-    let eventListeners = {};
-
-    for (let ev of Object.keys(eventMap)) {
-      const method = eventMap[ev];
-      eventListeners[ev] = [];
-      proxy[method] = function (...listeners) {
-        eventListeners[ev] = eventListeners[ev].concat(listeners);
-        emitter.on(ev, ...listeners);
-        return proxy;
-      };
+const proxyListener = (eventMap) => ({ emitter }) => {
+    const eventListeners = {};
+    const proxy = {
+        off(ev) {
+            if (!ev) {
+                Object.keys(eventListeners).forEach(eventName => proxy.off(eventName));
+            }
+            if (eventListeners[ev]) {
+                emitter.off(ev, ...eventListeners[ev]);
+            }
+            return proxy;
+        }
+    };
+    for (const ev of Object.keys(eventMap)) {
+        const method = eventMap[ev];
+        eventListeners[ev] = [];
+        proxy[method] = function (...listeners) {
+            eventListeners[ev] = eventListeners[ev].concat(listeners);
+            emitter.on(ev, ...listeners);
+            return proxy;
+        };
     }
-
-    return Object.assign(proxy, {
-      off(ev){
-        if (!ev) {
-          Object.keys(eventListeners).forEach(eventName => proxy.off(eventName));
-        }
-        if (eventListeners[ev]) {
-          emitter.off(ev, ...eventListeners[ev]);
-        }
-        return proxy;
-      }
-    });
-  }
-}
+    return proxy;
+};
 
 const TOGGLE_SORT = 'TOGGLE_SORT';
 
@@ -44,111 +39,99 @@ const SEARCH_CHANGED = 'SEARCH_CHANGED';
 
 const filterListener = proxyListener({[FILTER_CHANGED]: 'onFilterChange'});
 
-var filterDirective = function ({table, pointer, operator = 'includes', type = 'string'}) {
-  return Object.assign({
-      filter(input){
-        const filterConf = {
-          [pointer]: [
-            {
-              value: input,
-              operator,
-              type
-            }
-          ]
+var filterDirective = ({table, pointer, operator = 'includes', type = 'string'}) => Object.assign({
+	filter(input) {
+		const filterConf = {
+			[pointer]: [
+				{
+					value: input,
+					operator,
+					type
+				}
+			]
 
-        };
-        return table.filter(filterConf);
-      }
-    },
-    filterListener({emitter: table}));
-};
+		};
+		return table.filter(filterConf);
+	}
+}, filterListener({emitter: table}));
 
 const searchListener = proxyListener({[SEARCH_CHANGED]: 'onSearchChange'});
 
-var searchDirective = function ({table, scope = []}) {
-  return Object.assign(
-    searchListener({emitter: table}), {
-      search(input){
-        return table.search({value: input, scope});
-      }
-    });
-};
+var searchDirective = ({table, scope = []}) => Object.assign(searchListener({emitter: table}), {
+	search(input) {
+		return table.search({value: input, scope});
+	}
+});
 
 const sliceListener = proxyListener({[PAGE_CHANGED]: 'onPageChange', [SUMMARY_CHANGED]: 'onSummaryChange'});
 
 var sliceDirective = function ({table}) {
-  let {slice:{page:currentPage, size:currentSize}} = table.getTableState();
-  let itemListLength = table.length;
+	let {slice: {page: currentPage, size: currentSize}} = table.getTableState();
+	let itemListLength = table.length;
 
-  const api = {
-    selectPage(p){
-      return table.slice({page: p, size: currentSize});
-    },
-    selectNextPage(){
-      return api.selectPage(currentPage + 1);
-    },
-    selectPreviousPage(){
-      return api.selectPage(currentPage - 1);
-    },
-    changePageSize(size){
-      return table.slice({page: 1, size});
-    },
-    isPreviousPageEnabled(){
-      return currentPage > 1;
-    },
-    isNextPageEnabled(){
-      return Math.ceil(itemListLength / currentSize) > currentPage;
-    }
-  };
-  const directive = Object.assign(api, sliceListener({emitter: table}));
+	const api = {
+		selectPage(p) {
+			return table.slice({page: p, size: currentSize});
+		},
+		selectNextPage() {
+			return api.selectPage(currentPage + 1);
+		},
+		selectPreviousPage() {
+			return api.selectPage(currentPage - 1);
+		},
+		changePageSize(size) {
+			return table.slice({page: 1, size});
+		},
+		isPreviousPageEnabled() {
+			return currentPage > 1;
+		},
+		isNextPageEnabled() {
+			return Math.ceil(itemListLength / currentSize) > currentPage;
+		}
+	};
+	const directive = Object.assign(api, sliceListener({emitter: table}));
 
-  directive.onSummaryChange(({page:p, size:s, filteredCount}) => {
-    currentPage = p;
-    currentSize = s;
-    itemListLength = filteredCount;
-  });
+	directive.onSummaryChange(({page: p, size: s, filteredCount}) => {
+		currentPage = p;
+		currentSize = s;
+		itemListLength = filteredCount;
+	});
 
-  return directive;
+	return directive;
 };
 
 const sortListeners = proxyListener({[TOGGLE_SORT]: 'onSortToggle'});
 const directions = ['asc', 'desc'];
 
 var sortDirective = function ({pointer, table, cycle = false}) {
+	const cycleDirections = cycle === true ? ['none'].concat(directions) : [...directions].reverse();
+	let hit = 0;
 
-  const cycleDirections = cycle === true ? ['none'].concat(directions) : [...directions].reverse();
+	const directive = Object.assign({
+		toggle() {
+			hit++;
+			const direction = cycleDirections[hit % cycleDirections.length];
+			return table.sort({pointer, direction});
+		}
 
-  let hit = 0;
+	}, sortListeners({emitter: table}));
 
-  const directive = Object.assign({
-    toggle(){
-      hit++;
-      const direction = cycleDirections[hit % cycleDirections.length];
-      return table.sort({pointer, direction});
-    }
+	directive.onSortToggle(({pointer: p}) => {
+		if (pointer !== p) {
+			hit = 0;
+		}
+	});
 
-  }, sortListeners({emitter: table}));
-
-  directive.onSortToggle(({pointer:p}) => {
-    if (pointer !== p) {
-      hit = 0;
-    }
-  });
-
-  return directive;
+	return directive;
 };
 
-const executionListener = proxyListener({[SUMMARY_CHANGED]: 'onSummaryChange'});
+const summaryListener = proxyListener({[SUMMARY_CHANGED]: 'onSummaryChange'});
 
-var summaryDirective = function ({table}) {
-  return executionListener({emitter: table});
-};
+var summaryDirective = ({table}) => summaryListener({emitter: table});
 
-const executionListener$1 = proxyListener({[EXEC_CHANGED]: 'onExecutionChange'});
+const executionListener = proxyListener({[EXEC_CHANGED]: 'onExecutionChange'});
 
-var workingIndicatorDirective = function ({table}) {
-  return executionListener$1({emitter: table});
-};
+var workingIndicatorDirective = ({table}) => executionListener({emitter: table});
 
 const search = searchDirective;
 const slice = sliceDirective;
