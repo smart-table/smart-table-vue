@@ -9,9 +9,9 @@
     "example": "example"
   },
   "devDependencies": {
-    "rollup": "^0.41.4",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-node-resolve": "3.0.0",
+    "rollup": "^1.12.3",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-vue": "^5.0.0",
     "smart-table-core": "^2.4.1",
     "vue": "^2.5.6",
