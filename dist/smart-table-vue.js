@@ -42,7 +42,7 @@
   var filter = Object.assign({
       props: ['smartTable', 'stFilter', 'stFilterType', 'stFilterOperator']
     },
-    mixin(smartTableCore.filter,
+    mixin(smartTableCore.filterDirective,
       'onFilterChange',
       ['filter'],
       mapPropsToConf
@@ -50,12 +50,12 @@
 
   var loadingIndicator = Object.assign({
     props: ['smartTable']
-  }, mixin(smartTableCore.workingIndicator, 'onExecutionChange'));
+  }, mixin(smartTableCore.workingIndicatorDirective, 'onExecutionChange'));
 
   var pagination = Object.assign({
       props: ['smartTable']
     },
-    mixin(smartTableCore.slice,
+    mixin(smartTableCore.sliceFactory,
       'onSummaryChange',
       ['selectPage', 'selectNextPage', 'selectPreviousPage', 'isPreviousPageEnabled', 'isNextPageEnabled'])
   );
@@ -64,7 +64,7 @@
 
   var search = Object.assign({
     props: ['smartTable', 'stSearchScope'],
-  }, mixin(smartTableCore.search, 'onSearchChange', ['search'], mapPropsToConf$1));
+  }, mixin(smartTableCore.searchDirective, 'onSearchChange', ['search'], mapPropsToConf$1));
 
   const propsToConf = ({stSort, smartTable, stSortCycle}) => ({
     pointer: stSort,
@@ -74,7 +74,7 @@
 
   var sort = Object.assign({
     props: ['smartTable', 'stSort', 'stSortCycle'],
-  }, mixin(smartTableCore.sort,
+  }, mixin(smartTableCore.sortDirective,
     'onSortToggle',
     ['toggle'],
     propsToConf
@@ -83,7 +83,7 @@
   var summary = Object.assign({
       props: ['smartTable']
     },
-    mixin(smartTableCore.summary, 'onSummaryChange')
+    mixin(smartTableCore.summaryDirective, 'onSummaryChange')
   );
 
   var table = {
