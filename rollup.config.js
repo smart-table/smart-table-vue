@@ -1,12 +1,17 @@
 import nodeResolve from 'rollup-plugin-node-resolve'
 
 export default {
-  entry: './index.js',
-  dest: './dist/smart-table-vue.js',
-  format: 'umd',
-  sourceMap: true,
-  moduleName:'smart-table-vue',
+  external: [
+    'smart-table-core',
+  ],
+  input: './index.js',
+  output: {
+    file: './dist/smart-table-vue.js',
+    format: 'umd',
+    name:'smart-table-vue',
+    sourcemap: true,
+  },
   plugins: [
-    nodeResolve({jsnext: true})
+    nodeResolve(),
   ]
 }
