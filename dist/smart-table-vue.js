@@ -55,7 +55,7 @@
   var pagination = Object.assign({
       props: ['smartTable']
     },
-    mixin(smartTableCore.sliceFactory,
+    mixin(smartTableCore.paginationDirective,
       'onSummaryChange',
       ['selectPage', 'selectNextPage', 'selectPreviousPage', 'isPreviousPageEnabled', 'isNextPageEnabled'])
   );
