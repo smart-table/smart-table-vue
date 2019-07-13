@@ -12,9 +12,9 @@
     "rollup": "^1.12.3",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.0",
-    "rollup-plugin-vue": "^5.0.0",
-    "smart-table-core": "^3.0.3",
-    "vue": "^2.5.6",
+    "rollup-plugin-vue": "^5.0.1",
+    "smart-table-core": "^3.0.5",
+    "vue": "^2.5.16",
     "vue-template-compiler": "^2.5.16"
   },
   "scripts": {
