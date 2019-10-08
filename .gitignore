@@ -38,6 +38,7 @@ jspm_packages
 
 # Generated files
 dist/
+example/bundle.js
 
 
 .idea
