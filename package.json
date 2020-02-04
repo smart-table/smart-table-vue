@@ -24,7 +24,7 @@
   "scripts": {
     "build": "rollup -c rollup/build.js && rollup -c rollup/cdn.js",
     "build:example": "rollup -c ./example/rollup.config.js",
-    "test": "pta"
+    "test": "pta test/*.js"
   },
   "repository": {
     "type": "git",
