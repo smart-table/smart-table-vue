@@ -36,6 +36,12 @@ jobs:
         with:
           name: build-${{matrix.node-version}}
           path: dist
+      - name: Install OS dependencies
+        run: |
+        sudo apt-get update -q
+        sudo apt-get install -y --no-install-recommends \
+            chromium-browser
+        chromium-browser --version
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
