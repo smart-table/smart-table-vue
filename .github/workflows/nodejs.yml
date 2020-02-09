@@ -23,6 +23,7 @@ jobs:
           name: ${{matrix.node-version}}/dist
           path: dist
   test:
+    needs: build
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
