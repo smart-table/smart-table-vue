@@ -35,6 +35,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build-${{matrix.node-version}}
+          path: dist
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
