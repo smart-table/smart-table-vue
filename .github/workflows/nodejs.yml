@@ -20,8 +20,8 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: dist
-          path: dist/
+          name: ${{matrix.node-version}}/dist
+          path: dist
   test:
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -33,7 +33,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v1
         with:
-          name: dist
+          name: ${{matrix.node-version}}/dist
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
