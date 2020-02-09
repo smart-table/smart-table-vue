@@ -1,14 +1,16 @@
-import 'jsdom-global/register';
-import {shallowMount} from '@vue/test-utils';
 import {smartTable} from 'smart-table-core';
-import {table as tableMixin} from '../dist/index.js';
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-const tableData = [
-    { surname: "Renard",  name: "Laurent" },
-    { surname: "Leponge", name: "Bob" },
-];
+import stMixins from '../dist/smart-table-vue.js';
+const {table: tableMixin} = stMixins;
 
-export default ({test}) => {
+export default (test) => {
+    const shallowMount = window.VueTestUtils.shallowMount;
+    const sleep = ms => new Promise(resolve => setTimeout(() => {
+        resolve();
+    }, ms));
+    const tableData = [
+        { surname: "Renard",  name: "Laurent" },
+        { surname: "Leponge", name: "Bob" },
+    ];
     test('component using table mixin renders a complete table when mounted with initial data', async (t) => {
         const tableInstance = smartTable({
             data: tableData,

@@ -9,7 +9,7 @@ on:
       - '**'
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -21,36 +21,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: build-${{matrix.node-version}}
-          path: dist
-  test:
-    needs: build
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        node-version: [8.x, 10.x, 12.x]
-        operating-system: [ubuntu-18.04]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download build artifacts
-        uses: actions/download-artifact@v1
-        with:
-          name: build-${{matrix.node-version}}
-          path: dist
       - name: Install OS dependencies
         run: |
           sudo apt-get update -q
           sudo apt-get install -y --no-install-recommends \
               chromium-browser
           chromium-browser --version
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - run: npm run build
       - run: npm test
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-${{matrix.node-version}}
+          path: dist
