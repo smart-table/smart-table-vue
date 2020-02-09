@@ -1,5 +1,8 @@
 export default {
   input: './index.js',
+  external: [
+      'smart-table-core',
+  ],
   output: [{
     file: './dist/index.js',
     format: 'cjs',
