@@ -3,7 +3,7 @@ name: Node.js CI
 on: [push]
 
 jobs:
-  build: &build
+  build:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -23,7 +23,11 @@ jobs:
           name: dist
           path: dist/
   test:
-    <<: *build
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+        operating-system: [ubuntu-18.04]
     steps:
       - uses: actions/checkout@v2
       - name: Download build artifacts
