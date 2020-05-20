@@ -8,9 +8,18 @@ const chromiumPath = which.sync('chromium-browser');
         executablePath: chromiumPath,
     });
     const page = await browser.newPage();
-    page.on('console', msg => console.log(msg.text()));
-    await page.goto(`file://${__dirname}/index.html`);
-    setTimeout(() => {
-        browser.close()
-    }, 10000);
+    const forceCloseTimer = setTimeout(() => {
+        browser.close();
+    }, 60000);
+    page.on('console', msg => {
+        const text = msg.text();
+        console.log(text);
+        if (/^# failure:/u.test(text)) {
+            clearTimeout(forceCloseTimer);
+            browser.close();
+        }
+    });
+    await page.goto(`file://${__dirname}/index.html`, {
+        timeout: 0
+    });
 })();
