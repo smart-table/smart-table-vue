@@ -1,5 +1,8 @@
 import {smartTable} from 'smart-table-core';
+import * as VueTestUtils from '@vue/test-utils';
 import stMixins from '../dist/smart-table-vue.js';
+
+const {shallowMount} = VueTestUtils;
 const sleep = ms => new Promise(resolve => setTimeout(() => {
     resolve();
 }, ms));
@@ -23,7 +26,6 @@ const tableComponent = {
 };
 
 export default (test) => {
-    const {shallowMount} = window.VueTestUtils;
     const tableData = [
         { surname: "Renard",  name: "Laurent" },
         { surname: "Lazo", name: "Jan" },
