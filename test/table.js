@@ -101,4 +101,35 @@ export default (test) => {
 
         wrapper.destroy();
     });
+    test('component using table mixin filters table via table directive api', async (t) => {
+        const wrapper = shallowMount(tableComponent, {
+            propsData: {
+                smartTable: smartTable({
+                    data: tableData,
+                }),
+                order: tableOrder,
+            },
+        });
+        await sleep(20);
+
+        wrapper.vm.smartTable.filter({
+            surname: [{value: 'L'}],
+        });
+        await sleep(20);
+        t.equal(wrapper.findAll('tr').length, 2, 'First table row is filtered');
+
+        wrapper.vm.smartTable.filter({
+            name: [{value: 'L'}],
+        });
+        await sleep(20);
+        t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'First table row is not filtered');
+
+        wrapper.vm.smartTable.filter({
+            name: [{value: 'J'}],
+        });
+        await sleep(20);
+        t.equal(wrapper.find('tr').find('td').text(), tableData[1].surname, 'Second table row is not filtered');
+
+        wrapper.destroy();
+    });
 };
