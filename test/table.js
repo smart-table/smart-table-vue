@@ -43,12 +43,10 @@ export default (test) => {
         });
         await sleep(20);
 
-        const trNodes = wrapper.findAll('tr');
-        t.equal(trNodes.wrappers.length, tableData.length, 'component rendered all table rows');
-        const tdNodes = trNodes.at(0).findAll('td');
+        const tdNodes = wrapper.findAll('tr > td');
         t.equal(tdNodes.wrappers.length,
-                Object.keys(tableData[0]).length,
-                'First table row rendered all columns');
+                tableData.length * tableOrder.length,
+                'component rendered all table rows and columns');
         t.equal(tdNodes.at(0).text(), tableData[0][tableOrder[0]], 'table column displays correct value');
 
         wrapper.destroy();
@@ -69,35 +67,35 @@ export default (test) => {
             direction: 'none',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'table is not sorted');
+        t.equal(wrapper.find('tr > td').text(), tableData[0].surname, 'table is not sorted');
 
         wrapper.vm.smartTable.sort({
             pointer: tableOrder[0],
             direction: 'asc',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[1].surname, 'First table column is sorted in ascending order');
+        t.equal(wrapper.find('tr > td').text(), tableData[1].surname, 'First table column is sorted in ascending order');
 
         wrapper.vm.smartTable.sort({
             pointer: tableOrder[0],
             direction: 'desc',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'First table column is sorted in descending order');
+        t.equal(wrapper.find('tr > td').text(), tableData[0].surname, 'First table column is sorted in descending order');
 
         wrapper.vm.smartTable.sort({
             pointer: tableOrder[1],
             direction: 'asc',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').findAll('td').at(1).text(), tableData[2].name, 'Second table column is sorted in ascending order');
+        t.equal(wrapper.findAll('tr > td').at(1).text(), tableData[2].name, 'Second table column is sorted in ascending order');
 
         wrapper.vm.smartTable.sort({
             pointer: tableOrder[1],
             direction: 'desc',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').findAll('td').at(1).text(), tableData[0].name, 'Second table column is sorted in descending order');
+        t.equal(wrapper.findAll('tr > td').at(1).text(), tableData[0].name, 'Second table column is sorted in descending order');
 
         wrapper.destroy();
     });
@@ -122,13 +120,13 @@ export default (test) => {
             name: [{value: 'L'}],
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'First table row is not filtered');
+        t.equal(wrapper.find('tr > td').text(), tableData[0].surname, 'First table row is not filtered');
 
         wrapper.vm.smartTable.filter({
             name: [{value: 'J'}],
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[1].surname, 'Second table row is not filtered');
+        t.equal(wrapper.find('tr > td').text(), tableData[1].surname, 'Second table row is not filtered');
 
         wrapper.destroy();
     });
@@ -148,7 +146,7 @@ export default (test) => {
             value: 'o',
         });
         await sleep(20);
-        t.equal(wrapper.find('tr').find('td').text(), tableData[2].surname, 'Third table row remains after table is searched');
+        t.equal(wrapper.find('tr > td').text(), tableData[2].surname, 'Third table row remains after table is searched');
 
         wrapper.destroy();
     });
