@@ -132,4 +132,24 @@ export default (test) => {
 
         wrapper.destroy();
     });
+    test('component using table mixin searches table via table directive api', async (t) => {
+        const wrapper = shallowMount(tableComponent, {
+            propsData: {
+                smartTable: smartTable({
+                    data: tableData,
+                }),
+                order: tableOrder,
+            },
+        });
+        await sleep(20);
+
+        wrapper.vm.smartTable.search({
+            scope: ['name'],
+            value: 'o',
+        });
+        await sleep(20);
+        t.equal(wrapper.find('tr').find('td').text(), tableData[2].surname, 'Third table row remains after table is searched');
+
+        wrapper.destroy();
+    });
 };
