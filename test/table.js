@@ -24,6 +24,12 @@ const tableComponent = {
         ]);
     },
 };
+const defaultTableState = () => ({
+    sort: {},
+    slice: {page: 1},
+    filter: {},
+    search: {},
+});
 
 export default (test) => {
     const tableData = [
@@ -147,6 +153,37 @@ export default (test) => {
         });
         await sleep(20);
         t.equal(wrapper.find('tr > td').text(), tableData[2].surname, 'Third table row remains after table is searched');
+
+        wrapper.destroy();
+    });
+    test('component using table mixin can select page and change page size via table directive api', async (t) => {
+        const wrapper = shallowMount(tableComponent, {
+            propsData: {
+                smartTable: smartTable({
+                    data: tableData,
+                    tableState: Object.assign(defaultTableState(), {
+                        slice: {page: 1, size: 1},
+                    }),
+                }),
+                order: tableOrder,
+            },
+        });
+        await sleep(20);
+        t.equal(wrapper.findAll('tr').length, 1, 'First page displays the first table item only');
+
+        wrapper.vm.smartTable.slice({
+            page: 2,
+            size: 2,
+        });
+        await sleep(20);
+        t.equal(wrapper.findAll('tr').length, 1, 'Second page displays the last item only');
+
+        wrapper.vm.smartTable.slice({
+            page: 2,
+            size: tableData.length,
+        });
+        await sleep(20);
+        t.equal(wrapper.findAll('tr').length, 0, 'Second page displays nothing when the page size is equal to the table data length');
 
         wrapper.destroy();
     });
