@@ -33,12 +33,11 @@ export default (test) => {
     ];
     const tableOrder = ['surname', 'name'];
     test('component using table mixin renders a complete table when mounted with initial data', async (t) => {
-        const tableInstance = smartTable({
-            data: tableData,
-        });
         const wrapper = shallowMount(tableComponent, {
             propsData: {
-                smartTable: tableInstance,
+                smartTable: smartTable({
+                    data: tableData,
+                }),
                 order: tableOrder,
             },
         });
@@ -51,52 +50,55 @@ export default (test) => {
                 Object.keys(tableData[0]).length,
                 'First table row rendered all columns');
         t.equal(tdNodes.at(0).text(), tableData[0][tableOrder[0]], 'table column displays correct value');
+
+        wrapper.destroy();
     });
     test('component using table mixin sorts table via table directive api', async (t) => {
-        const tableInstance = smartTable({
-            data: tableData,
-        });
         const wrapper = shallowMount(tableComponent, {
             propsData: {
-                smartTable: tableInstance,
+                smartTable: smartTable({
+                    data: tableData,
+                }),
                 order: tableOrder,
             },
         });
         await sleep(20);
 
-        tableInstance.sort({
+        wrapper.vm.smartTable.sort({
             pointer: tableOrder[0],
             direction: 'none',
         });
         await sleep(20);
         t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'table is not sorted');
 
-        tableInstance.sort({
+        wrapper.vm.smartTable.sort({
             pointer: tableOrder[0],
             direction: 'asc',
         });
         await sleep(20);
         t.equal(wrapper.find('tr').find('td').text(), tableData[1].surname, 'First table column is sorted in ascending order');
 
-        tableInstance.sort({
+        wrapper.vm.smartTable.sort({
             pointer: tableOrder[0],
             direction: 'desc',
         });
         await sleep(20);
         t.equal(wrapper.find('tr').find('td').text(), tableData[0].surname, 'First table column is sorted in descending order');
 
-        tableInstance.sort({
+        wrapper.vm.smartTable.sort({
             pointer: tableOrder[1],
             direction: 'asc',
         });
         await sleep(20);
         t.equal(wrapper.find('tr').findAll('td').at(1).text(), tableData[2].name, 'Second table column is sorted in ascending order');
 
-        tableInstance.sort({
+        wrapper.vm.smartTable.sort({
             pointer: tableOrder[1],
             direction: 'desc',
         });
         await sleep(20);
         t.equal(wrapper.find('tr').findAll('td').at(1).text(), tableData[0].name, 'Second table column is sorted in descending order');
+
+        wrapper.destroy();
     });
 };
