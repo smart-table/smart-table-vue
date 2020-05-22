@@ -31,14 +31,14 @@ const defaultTableState = () => ({
     search: {},
 });
 
-export default (test) => {
+export default ({test}) => {
     const tableData = [
         { surname: "Renard",  name: "Laurent" },
         { surname: "Lazo", name: "Jan" },
         { surname: "Leponge", name: "Bob" },
     ];
     const tableOrder = ['surname', 'name'];
-    test('component using table mixin renders a complete table when mounted with initial data', async (t) => {
+    test('component renders a complete table when mounted with initial data', async (t) => {
         const wrapper = shallowMount(tableComponent, {
             propsData: {
                 smartTable: smartTable({
@@ -57,7 +57,7 @@ export default (test) => {
 
         wrapper.destroy();
     });
-    test('component using table mixin sorts table via table directive api', async (t) => {
+    test('component sorts table via table directive api', async (t) => {
         const wrapper = shallowMount(tableComponent, {
             propsData: {
                 smartTable: smartTable({
@@ -105,7 +105,7 @@ export default (test) => {
 
         wrapper.destroy();
     });
-    test('component using table mixin filters table via table directive api', async (t) => {
+    test('component filters table via table directive api', async (t) => {
         const wrapper = shallowMount(tableComponent, {
             propsData: {
                 smartTable: smartTable({
@@ -136,7 +136,7 @@ export default (test) => {
 
         wrapper.destroy();
     });
-    test('component using table mixin searches table via table directive api', async (t) => {
+    test('component searches table via table directive api', async (t) => {
         const wrapper = shallowMount(tableComponent, {
             propsData: {
                 smartTable: smartTable({
@@ -156,7 +156,7 @@ export default (test) => {
 
         wrapper.destroy();
     });
-    test('component using table mixin can select page and change page size via table directive api', async (t) => {
+    test('component can select page and change page size via table directive api', async (t) => {
         const wrapper = shallowMount(tableComponent, {
             propsData: {
                 smartTable: smartTable({

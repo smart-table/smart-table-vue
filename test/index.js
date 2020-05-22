@@ -1,4 +1,4 @@
 import {test} from 'zora';
 import testTable from './table.js';
 
-testTable(test);
+test('table mixin', testTable);
