@@ -1,7 +1,7 @@
 module.exports = {
-    input: __dirname + '/../test/index.js',
+    input: __dirname + '/../test/spa/index.js',
     output: [{
-        file: __dirname + '/../test/bundle.js',
+        file: __dirname + '/../test/spa/bundle.js',
         name: 'test',
         format: 'iife',
         sourcemap: 'inline',

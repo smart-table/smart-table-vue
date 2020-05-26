@@ -27,7 +27,7 @@
   "scripts": {
     "build": "rollup -c rollup/build.js && rollup -c rollup/cdn.js",
     "build:example": "rollup -c ./example/rollup.config.js",
-    "test": "rollup -c rollup/test.js && node test/runner.js | tap-set-exit"
+    "test": "rollup -c rollup/test.js && node test/spa/runner.js | tap-set-exit"
   },
   "repository": {
     "type": "git",

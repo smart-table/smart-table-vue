@@ -1,6 +1,6 @@
 import {smartTable} from 'smart-table-core';
 import * as VueTestUtils from '@vue/test-utils';
-import stMixins from '../dist/smart-table-vue.js';
+import stMixins from '../../dist/smart-table-vue.js';
 
 const {shallowMount} = VueTestUtils;
 const sleep = ms => new Promise(resolve => setTimeout(() => {
