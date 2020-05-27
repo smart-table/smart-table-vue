@@ -9,25 +9,33 @@
     "example": "example"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@vue/server-test-utils": "^1.0.3",
     "@vue/test-utils": "^1.0.3",
+    "core-js": "^2.6.11",
     "js-beautify": "<1.11",
     "puppeteer-core": "^2.0.0",
     "rollup": "^1.23.1",
+    "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-vue": "^5.0.1",
     "smart-table-core": "^3.0.7",
     "tap-set-exit": "^1.1.1",
-    "vue": "^2.5.16",
-    "vue-template-compiler": "^2.5.16",
+    "vue": "^2.6.11",
+    "vue-server-renderer": "^2.6.11",
+    "vue-template-compiler": "^2.6.11",
     "which": "^2.0.2",
     "zora": "^3.1.8"
   },
   "scripts": {
     "build": "rollup -c rollup/build.js && rollup -c rollup/cdn.js",
     "build:example": "rollup -c ./example/rollup.config.js",
-    "test": "rollup -c rollup/test.js && node test/spa/runner.js | tap-set-exit"
+    "test": "npm run test:ssr && npm run test:spa",
+    "test:spa": "rollup -c test/spa/rollup.config.js && node test/spa/runner.js | tap-set-exit",
+    "test:ssr": "rollup -c test/ssr/rollup.config.js && node test/ssr/bundle.js | tap-set-exit"
   },
   "repository": {
     "type": "git",

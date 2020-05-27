@@ -40,5 +40,6 @@ jspm_packages
 dist/
 example/bundle.js
 /test/spa/bundle.js
+/test/ssr/bundle.js
 
 .idea
