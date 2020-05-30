@@ -1,7 +1,7 @@
 module.exports = {
-    input: __dirname + '/../test/index.js',
+    input: __dirname + '/index.js',
     output: [{
-        file: __dirname + '/../test/bundle.js',
+        file: __dirname + '/bundle.js',
         name: 'test',
         format: 'iife',
         sourcemap: 'inline',
@@ -15,6 +15,7 @@ module.exports = {
         require('rollup-plugin-commonjs')(),
         // set 'process.env.NODE_ENV' for Vue
         require('rollup-plugin-node-polyfills')(),
+        require('rollup-plugin-vue')(),
     ],
     onwarn: warning => {
         const circularModules = [

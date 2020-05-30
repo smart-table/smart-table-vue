@@ -1,35 +1,7 @@
 import {smartTable} from 'smart-table-core';
-import * as VueTestUtils from '@vue/test-utils';
-import stMixins from '../dist/smart-table-vue.js';
-
-const {shallowMount} = VueTestUtils;
-const sleep = ms => new Promise(resolve => setTimeout(() => {
-    resolve();
-}, ms));
-const tableComponent = {
-    mixins: [stMixins.table],
-    props: {
-        order: {
-            type: Array,
-            required: true,
-        },
-    },
-    render(h) {
-        return h('table', {}, [
-            h('tbody', {}, this.displayed.map(({value}) =>
-                h('tr', {}, this.order.map(prop =>
-                    h('td', {}, value[prop]),
-                )),
-            )),
-        ]);
-    },
-};
-const defaultTableState = () => ({
-    sort: {},
-    slice: {page: 1},
-    filter: {},
-    search: {},
-});
+import {shallowMount} from '@vue/test-utils';
+import tableComponent from '../fixtures/StTable.vue';
+import {sleep, defaultTableState} from '../helpers.js';
 
 export default ({test}) => {
     const tableData = [
