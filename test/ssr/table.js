@@ -26,4 +26,18 @@ export default ({test}) => {
                 'component rendered all table rows and columns');
         t.equal(tdNodes.first().text(), tableData[0][tableOrder[0]], 'table column displays correct value');
     });
+    test('component supports pagination', async (t) => {
+        const wrapper = await render(tableComponent, {
+            propsData: {
+                smartTable: smartTable({
+                    data: tableData,
+                    tableState: Object.assign(defaultTableState(), {
+                        slice: {page: 1, size: 1},
+                    }),
+                }),
+                order: tableOrder,
+            },
+        });
+        t.equal(wrapper.find('tr').length, 1, 'First page displays the first table item only');
+    });
 };
